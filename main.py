@@ -1,23 +1,42 @@
 import pandas as pd
 
 class Data1:
-    def __init__(self):
-        self.filepathroot = '/Users/ryudai/Desktop/data_sfc/A_01.csv'
+    def __init__(self) -> None:
+        self.filepathroot = '/Users/ryudai/Desktop/data_sfc/A_'
+        self.filepath_no = 1
+        self.filepath_no_zfill = str(self.filepath_no).zfill(2)
 
-        self.filepath = self.filepathroot + self.filepath
-        pass
+        #スライスの起点と終点を定義
+        self.slicestart = 0
+        self.sliceend = 59
 
-class Data2:
-    def __init__(self):
-        self.filepath = '/Users/ryudai/Desktop/data_sfc/A_02.csv'
-        pass
+        print('通過')
+    
+    def datareturn(self):
+        print('メソッド通過')
+
+        #csvを読み込んでself.dataにパス
+        self.filepath = self.filepathroot + self.filepath_no_zfill + '.csv'
+        self.data = pd.read_csv(self.filepath)
+
+        #self.dataから60分の検索窓枠を設定
+        self.data60 = self.data.loc[ self.slicestart : self.sliceend , 'date' : 'steps' ]
+        
+        #検索した６０分のデータを返す
+        return self.data60
 
 
+### ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝以下Appに相当＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-data = pd.read_csv(filepath)
+class App:
+    def __init__(self) -> None:
+        self.data1 = Data1()
 
-data60 = data.loc[ 0 : 59 , 'date' : 'steps' ]
+        self.data1.datareturn.to_csv('/Users/ryudai/Desktop/output.csv')
 
-print(data60)
+    staticmethod
+    def test(self):
+        print('static機能')
+        print(self.data1.datareturn())
 
-data60.to_csv('/Users/ryudai/Desktop/output.csv')
+App()
