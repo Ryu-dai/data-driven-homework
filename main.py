@@ -7,8 +7,8 @@ class Data1:
         self.filepath_no_zfill = str(self.filepath_no).zfill(2)
 
         #スライスの起点と終点を定義
-        self.slicestart = 0
-        self.sliceend = 59
+        self.slicestart = 100
+        self.sliceend = 159
 
         print('通過')
     
@@ -32,11 +32,6 @@ class App:
     def __init__(self) -> None:
         self.data1 = Data1()
 
-        self.data1.datareturn.to_csv('/Users/ryudai/Desktop/output.csv')
-
-    staticmethod
-    def test(self):
-        print('static機能')
-        print(self.data1.datareturn())
+        self.data1.datareturn().to_csv('/Users/ryudai/Desktop/output.csv')
 
 App()
