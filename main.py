@@ -1,3 +1,4 @@
+from turtle import Turtle
 import pandas as pd
 
 ### ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝でーた読み込みクラス＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -84,6 +85,22 @@ class Cal:
 
         #NaNを１に置換して返す
         return self.result.fillna(1)
+
+
+### ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝以下ポイント計算クラス＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+class Point:
+    def __init__(self) -> None:
+        self.cal = Cal()
+
+    #分母の合計の条件判定
+    def bottomfit(self):
+        if self.cal.bottomsum() >= 5500:
+            return True
+
+        else:
+            return False
+
 
 
 ### ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝以下Appに相当＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
