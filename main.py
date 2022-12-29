@@ -71,6 +71,12 @@ class Cal:
         
         return self.bottomdata
 
+    #分母の合計値の計算
+    def bottomsum(self):
+        self.sumbottom = self.calbottom().sum()
+
+        return self.sumbottom
+
     #dt（a, b)の計算
 
     def calresult(self):
@@ -90,7 +96,7 @@ class App:
 
         self.datatest = pd.DataFrame()
 
-        print(self.cal.calresult())
+        print(self.cal.bottomsum())
 
         self.cal.calresult().to_csv('/Users/ryudai/Desktop/output.csv')
 
