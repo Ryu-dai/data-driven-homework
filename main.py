@@ -59,9 +59,15 @@ class Cal:
 
 
     def caltop(self):
-        self.topdata = (self.data1.data60return() ** 2 ) + (self.data2.data60return() ** 2)
-        
+        self.topdata = (self.data1.data60return() - self.data2.data60return()) ** 2
+
         return self.topdata
+
+
+    def calbottom(self):
+        self.bottomdata = (self.data1.data60return() ** 2 ) + (self.data2.data60return() ** 2)
+        
+        return self.bottomdata
 
 
 ### ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝以下Appに相当＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
