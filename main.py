@@ -57,17 +57,27 @@ class Cal:
         self.data1 = Data1()
         self.data2 = Data2()
 
+    #分子の計算
 
     def caltop(self):
         self.topdata = (self.data1.data60return() - self.data2.data60return()) ** 2
 
         return self.topdata
 
+    #分母の計算
 
     def calbottom(self):
         self.bottomdata = (self.data1.data60return() ** 2 ) + (self.data2.data60return() ** 2)
         
         return self.bottomdata
+
+    #dt（a, b)の計算
+
+    def calresult(self):
+        self.result = self.caltop() / self.calbottom()
+
+        #NaNを１に置換して返す
+        return self.result.fillna(1)
 
 
 ### ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝以下Appに相当＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -80,6 +90,8 @@ class App:
 
         self.datatest = pd.DataFrame()
 
-        self.cal.caltop().to_csv('/Users/ryudai/Desktop/output.csv')
+        print(self.cal.calresult())
+
+        self.cal.calresult().to_csv('/Users/ryudai/Desktop/output.csv')
 
 App()
