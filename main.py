@@ -98,7 +98,11 @@ class Cal:
 class Point:
     def __init__(self) -> None:
         self.cal = Cal()
+        self.data1 = Data1()
+        self.data2 = Data2()
         self.countlist = []
+
+        self.sumpoint = 0
 
     #分母の合計の条件判定
     def bottomfit(self):
@@ -124,7 +128,15 @@ class Point:
             #６０分の合計スコアを計算
             self.point = sum(self.OKlist) - (14 * len(self.OKlist))
 
-            return self.point
+            #合計ポイント管理の変数に加算
+            self.sumpoint += self.point
+
+            #スライスの起点と終点をずらす
+            self.data1.slicestart += 1
+            self.data2.sliceend += 1
+
+            return self.sumpoint
+
 
 
 
