@@ -5,14 +5,15 @@ import numpy as np
 ### ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝でーた読み込みクラス＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 class Data1:
+
+    slicestart = 0
+    sliceend = 59
+
     def __init__(self) -> None:
         self.filepathroot = '/Users/ryudai/Desktop/data_sfc/A_'
-        self.filepath_no = 1
+        self.filepath_no = 6
         self.filepath_no_zfill = str(self.filepath_no).zfill(2)
 
-        #スライスの起点と終点を定義
-        self.slicestart = 533
-        self.sliceend = 592
 
     
     def data60return(self):
@@ -29,14 +30,15 @@ class Data1:
 
 
 class Data2:
+    
+    slicestart = 0
+    sliceend = 59
+
     def __init__(self) -> None:
         self.filepathroot = '/Users/ryudai/Desktop/data_sfc/A_'
-        self.filepath_no = 2
+        self.filepath_no = 9
         self.filepath_no_zfill = str(self.filepath_no).zfill(2)
 
-        #スライスの起点と終点を定義
-        self.slicestart = 533
-        self.sliceend = 592
 
     
     def data60return(self):
@@ -102,8 +104,6 @@ class Point:
         self.data2 = Data2()
         self.countlist = []
 
-        self.sumpoint = 0
-
     #分母の合計の条件判定
     def bottomfit(self):
         if self.cal.bottomsum() >= 5500:
@@ -127,15 +127,14 @@ class Point:
 
             #６０分の合計スコアを計算
             self.point = sum(self.OKlist) - (14 * len(self.OKlist))
+            
 
-            #合計ポイント管理の変数に加算
-            self.sumpoint += self.point
 
-            #スライスの起点と終点をずらす
-            self.data1.slicestart += 1
-            self.data2.sliceend += 1
+            return self.point
 
-            return self.sumpoint
+
+        else:
+            return 0
 
 
 
@@ -144,17 +143,32 @@ class Point:
 
 ### ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝以下Appに相当＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-class App:
-    def __init__(self) -> None:
-        self.data1 = Data1()
-        self.data2 = Data2()
-        self.cal = Cal()
-        self.point = Point()
+point = Point()
+data1 = Data1()
+data2 = Data2()
+pointsum = 0
+roopcount = 0
+while True:
+    
+    pointsum += point.pointcount()
 
-        self.datatest = pd.DataFrame()
+    
+    roopcount += 1
 
-        print(self.point.pointcount())
+    data1.__class__.slicestart += 1
+    data1.__class__.sliceend += 1
+    data2.__class__.slicestart += 1
+    data2.__class__.sliceend += 1
 
-        self.cal.caldtab().to_csv('/Users/ryudai/Desktop/output.csv')
 
-App()
+
+
+    point.countlist.clear()
+    print(roopcount)
+
+
+    if data1.sliceend == 21600:
+        print(pointsum)
+        print('処理終わり')
+        break
+
