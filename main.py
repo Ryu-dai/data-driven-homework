@@ -12,7 +12,7 @@ class Data1:
     def __init__(self) -> None:
         self.filepathroot = '/Users/ryudai/Desktop/data_sfc/'
         self.filegroup = 'A'
-        self.filepath_no = 8
+        self.filepath_no = 1
         self.filepath_no_zfill = str(self.filepath_no).zfill(2)
 
 
@@ -34,11 +34,11 @@ class Data2:
     
     slicestart = 0
     sliceend = 59
+    filepath_no = 2
 
     def __init__(self) -> None:
         self.filepathroot = '/Users/ryudai/Desktop/data_sfc/'
         self.filegroup = 'A'
-        self.filepath_no = 5
         self.filepath_no_zfill = str(self.filepath_no).zfill(2)
 
 
@@ -150,13 +150,13 @@ data1 = Data1()
 data2 = Data2()
 pointsum = 0
 roopcount = 0
-outputlist_index = data1.filegroup + str(data1.filepath_no) + data2.filegroup + str(data2.filepath_no)
-outputlist = pd.DataFrame(index=[outputlist_index])
 while True:
     
     pointsum += point.pointcount()
 
-    
+    outputlist_index = data1.filegroup + str(data1.filepath_no) + data2.filegroup + str(data2.filepath_no)
+    outputlist = pd.DataFrame(index=[outputlist_index])
+
     roopcount += 1
 
     data1.__class__.slicestart += 1
@@ -174,18 +174,30 @@ while True:
     print(data1.sliceend)
     
 
-
-    if data1.sliceend == 60:
+    #最後まで処理したら
+    if data1.sliceend == 21600:
         print(pointsum)
 
         outputlist['score'] = pointsum
 
         print(outputlist)
 
-        outputlist.to_csv('/Users/ryudai/Desktop/output.csv')
+        outputlist.to_csv('/Users/ryudai/Desktop/output.csv', mode='a' , header=False)
 
-        
+        #参照するファイルの場所を変更する
+        if data2.filepath_no < 10 :
 
-        print('処理終わり')
-        break
+
+            data1.__class__.slicestart = 0
+            data1.__class__.sliceend = 59
+            data2.__class__.slicestart = 0
+            data2.__class__.sliceend = 59
+            pointsum = 0
+
+            data2.filepath_no += 1
+
+        #10番目の最後まで行ったら終わる
+        elif data2.filepath_no == 10 and data2.sliceend == 21600:
+            print('処理終わり')
+            break
 
