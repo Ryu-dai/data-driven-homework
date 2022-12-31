@@ -10,8 +10,9 @@ class Data1:
     sliceend = 59
 
     def __init__(self) -> None:
-        self.filepathroot = '/Users/ryudai/Desktop/data_sfc/A_'
-        self.filepath_no = 6
+        self.filepathroot = '/Users/ryudai/Desktop/data_sfc/'
+        self.filegroup = 'A'
+        self.filepath_no = 8
         self.filepath_no_zfill = str(self.filepath_no).zfill(2)
 
 
@@ -19,7 +20,7 @@ class Data1:
     def data60return(self):
 
         #csvを読み込んでself.dataにパス
-        self.filepath = self.filepathroot + self.filepath_no_zfill + '.csv'
+        self.filepath = self.filepathroot + self.filegroup + '_' + self.filepath_no_zfill + '.csv'
         self.data = pd.read_csv(self.filepath)
 
         #self.dataから60分の検索窓枠を設定
@@ -35,8 +36,9 @@ class Data2:
     sliceend = 59
 
     def __init__(self) -> None:
-        self.filepathroot = '/Users/ryudai/Desktop/data_sfc/A_'
-        self.filepath_no = 9
+        self.filepathroot = '/Users/ryudai/Desktop/data_sfc/'
+        self.filegroup = 'A'
+        self.filepath_no = 5
         self.filepath_no_zfill = str(self.filepath_no).zfill(2)
 
 
@@ -44,7 +46,7 @@ class Data2:
     def data60return(self):
 
         #csvを読み込んでself.dataにパス
-        self.filepath = self.filepathroot + self.filepath_no_zfill + '.csv'
+        self.filepath = self.filepathroot + self.filegroup + '_' + self.filepath_no_zfill + '.csv'
         self.data = pd.read_csv(self.filepath)
 
         #self.dataから60分の検索窓枠を設定
@@ -148,6 +150,8 @@ data1 = Data1()
 data2 = Data2()
 pointsum = 0
 roopcount = 0
+outputlist_index = data1.filegroup + str(data1.filepath_no) + data2.filegroup + str(data2.filepath_no)
+outputlist = pd.DataFrame(index=[outputlist_index])
 while True:
     
     pointsum += point.pointcount()
@@ -160,15 +164,28 @@ while True:
     data2.__class__.slicestart += 1
     data2.__class__.sliceend += 1
 
+    print(point.countlist)
+    print(pointsum)
+
 
 
 
     point.countlist.clear()
-    print(roopcount)
+    print(data1.sliceend)
+    
 
 
-    if data1.sliceend == 21600:
+    if data1.sliceend == 60:
         print(pointsum)
+
+        outputlist['score'] = pointsum
+
+        print(outputlist)
+
+        outputlist.to_csv('/Users/ryudai/Desktop/output.csv')
+
+        
+
         print('処理終わり')
         break
 
