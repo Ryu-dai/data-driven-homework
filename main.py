@@ -93,21 +93,20 @@ class Cal:
     def caldtab(self):
         self.result = self.topsum() / self.bottomsum()
 
-        print('通ったよ')
-
-
         return self.result
 
 
 ### ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝以下ポイント計算クラス＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 class Point:
+    point = 0
     def __init__(self) -> None:
         self.cal = Cal()
         self.data1 = Data1()
         self.data2 = Data2()
         self.calresult = []
         self.countlist = []
+        
 
     #分母の合計の条件判定
     def bottomfit(self):
@@ -142,9 +141,9 @@ class Point:
             data2.__class__.slicestart += 1
             data2.__class__.sliceend += 1
 
-            print(data1.sliceend)
+            print(outputlist_index)
 
-            print('通ったよ')
+            print(data1.sliceend)
 
             if data1.sliceend == 21600:
 
@@ -183,14 +182,49 @@ point = Point()
 data1 = Data1()
 data2 = Data2()
 cal = Cal()
+
+while True:
+
+    outputlist_index = data1.filegroup + str(data1.filepath_no) + data2.filegroup + str(data2.filepath_no)
+    outputlist = pd.DataFrame(index=[outputlist_index])
+
+    outputlist['score'] = point.pointcount()
+    outputlist.to_csv('/Users/ryudai/Desktop/output.csv', mode='a' , header=False)
+
+    point.calresult.clear()
+    outputlist = pd.DataFrame(data = None, columns=None, dtype=None)
+    point.__class__.point = 0
+    point.calresult = []
+    point.countlist = []
+    point.grouplist = []
+    point.OKlist = []
+
+
+    #参照するファイルの場所を変更する
+    if data2.filepath_no < 10 :
+
+        data1.__class__.slicestart = 0
+        data1.__class__.sliceend = 59
+        data2.__class__.slicestart = 0
+        data2.__class__.sliceend = 59
+
+        data2.__class__.filepath_no += 1
+    #10番目の最後まで行ったらdata1を一つ進める
+    elif data2.filepath_no == 10:
+
+        data1.__class__.slicestart = 0
+        data1.__class__.sliceend = 59
+        data2.__class__.slicestart = 0
+        data2.__class__.sliceend = 59
+
+        data1.__class__.filepath_no += 1
+        data2.__class__.filepath_no = data1.filepath_no + 1
+
+    elif data1.filepath_no == 9 and data2.filepath_no == 10:
+
+        print('処理終わり')
+        break
     
-print(point.pointcount())
-
-outputlist_index = data1.filegroup + str(data1.filepath_no) + data2.filegroup + str(data2.filepath_no)
-outputlist = pd.DataFrame(index=[outputlist_index])
-
-
-print(point.countlist)
 
 
 
