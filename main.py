@@ -198,7 +198,7 @@ while True:
     point.countlist = []
     point.grouplist = []
     point.OKlist = []
-
+    
 
     #参照するファイルの場所を変更する
     if data2.filepath_no < 10 :
